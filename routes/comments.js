@@ -41,32 +41,32 @@ router.get('/:id', (req, res) => {
 // create a comment
 router.post('/', (req, res) => {
   if (!req.body.text) {
-    res.status(400).json({
+    return res.status(400).json({
       msg: 'Invalid syntax: please provide comment text',
     });
-    //   }
-    //   // create a new comment with the text
-    //   // timestamp: moment()
-    const newComment = {
-      text: req.body.text,
-      id: shortid.generate(),
-      timestamp: moment().format(),
-    };
-
-    //   // for id: https://github.com/dylang/shortid
-
-    //   // add it to commentdata
-
-    db.get('comments')
-      .push(newComment)
-      .write();
-    //   // return all the comments (make sure the new comment is included)
-    res.status(201).json({
-      msg: 'Comment successfully added',
-      comments: db.get('comments').value(),
-    });
-    //   // BONUS: if request has no body text (or text is empty), send proper error code and maybe a message.
   }
+  //   }
+  //   // create a new comment with the text
+  //   // timestamp: moment()
+  const newComment = {
+    text: req.body.text,
+    id: shortid.generate(),
+    timestamp: moment().format(),
+  };
+
+  //   // for id: https://github.com/dylang/shortid
+
+  //   // add it to commentdata
+
+  db.get('comments')
+    .push(newComment)
+    .write();
+  //   // return all the comments (make sure the new comment is included)
+  res.status(201).json({
+    msg: 'Comment successfully added',
+    comments: db.get('comments').value(),
+  });
+  //   // BONUS: if request has no body text (or text is empty), send proper error code and maybe a message.
 });
 
 // updates a comment
