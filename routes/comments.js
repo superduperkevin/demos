@@ -17,9 +17,15 @@ const router = express.Router();
 
 // get all comments
 router.get('/', (req, res) => {
-  const comments = db.get('comments').value();
-  res.json(commentData);
+  let comments = db.get('comments').value();
+  if (req.query.filter) {
+    const filterText = req.query.filter;
+    comments = comments.filter(comment => comment.text.toLowerCase().includes(filterText.toLowerCase()));
+  }
+  res.json(comments);
 });
+
+// GET /comments?filter="your text here"
 
 // get a single comment by id
 router.get('/:id', (req, res) => {
@@ -108,6 +114,7 @@ router.put('/:id', (req, res) => {
 
 // BONUS: if request has no body text (or text is empty), send proper error code and maybe a message.
 router.delete('/:id', (req, res) => {
+  console.log(req.params.id);
   if (
     !db
       .get('comments')
