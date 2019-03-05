@@ -114,7 +114,6 @@ router.put('/:id', (req, res) => {
 
 // BONUS: if request has no body text (or text is empty), send proper error code and maybe a message.
 router.delete('/:id', (req, res) => {
-  console.log(req.params.id);
   if (
     !db
       .get('comments')
