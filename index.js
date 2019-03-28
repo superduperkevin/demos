@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const commentData = require('./data');
 const commentsRouter = require('./routes/comments');
+const authRouter = require('./routes/auth');
 // const logger = require('./middleware/logger');
 
 mongoose.connect(
@@ -44,6 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // routing
 app.use('/api/comments', commentsRouter);
+app.use('/api/auth', authRouter);
 
 const PORT = process.env.PORT || 5000;
 
