@@ -3,6 +3,7 @@ const moment = require('moment');
 const shortid = require('shortid');
 const lowdb = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+const passport = require('passport');
 const commentData = require('../data');
 const Comment = require('../models/comment.model');
 const User = require('../models/user.model');
@@ -54,15 +55,15 @@ router.get('/:id', (req, res) => {
 });
 
 // create a comment
-router.post('/', (req, res) => {
-  if (!req.body.text || !req.body.userId) {
+router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  if (!req.body.text) {
     return res.status(400).json({ msg: 'Invalid syntax: please provide valid text' });
   }
 
-  Comment.create({ text: req.body.text, user: req.body.userId })
+  Comment.create({ text: req.body.text, user: req.user._id })
     // update the user's comments
     .then(comment =>
-      User.findByIdAndUpdate(req.body.userId, {
+      User.findByIdAndUpdate(req.body.userd, {
         $push: { comments: comment._id },
       })
     )
